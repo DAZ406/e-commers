@@ -12,3 +12,12 @@ export const getUserByInfo = async (username: string, password: string): Promise
 
     return user;
 };
+
+export const addNewUser = async (username: string, password: string): Promise<Object> => {
+    if((!username) || (!password)) {
+        throw new CustomError("One of the fileds is missing! please check that you wrote your username and password");
+    }
+    const newUser = {username: username, password: password};
+
+    return userRepository.insert(newUser);
+};
