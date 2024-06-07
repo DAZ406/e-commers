@@ -11,9 +11,9 @@ export class Order {
   @Column({name: 'status'})
   status: string;
 
-  @ManyToOne(() => User, (user) => user.orders)
-  @JoinColumn({ name: 'user_id' })
-  buyer: User;
+  // @ManyToOne(() => User, (user) => user.orders)
+  // @JoinColumn({ name: 'user_id' })
+  // buyer: User;
 
   @ManyToMany(() => Product, (product) => product.orders) 
   products: Product[];

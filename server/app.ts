@@ -2,6 +2,7 @@ import express from 'express';
 import { AppDataSource } from './connection/data-source';
 import { erorrHandler, errorLogger } from './Middlewares/errorHandler';
 import { loggerMiddleware } from './Middlewares/loggerMiddleware';
+import userRouter from "./routes/user.router"
 const PORT = 3000;
 
 AppDataSource.initialize()
@@ -9,7 +10,7 @@ AppDataSource.initialize()
     const app = express();
     app.use(express.json());
     app.use(loggerMiddleware);
-    //app.use(router);
+    app.use('/users', userRouter);
     app.use(errorLogger);
     app.use(erorrHandler);
 

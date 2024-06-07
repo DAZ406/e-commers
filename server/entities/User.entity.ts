@@ -8,11 +8,11 @@ export class User {
   id: number;
 
   @Column({name: 'username'})
-  username: string;
+  username: String;
 
   @Column({name: 'password'})
-  password: string;
+  password: String;
 
-  @OneToMany(() => Order, (order) => order.buyer)
-  orders: Order[];
+  // @OneToMany(() => Order, (order) => order.buyer)
+  // orders: Order[];
 }
