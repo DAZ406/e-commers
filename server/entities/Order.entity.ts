@@ -1,6 +1,6 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { User } from './User.entity';
-import { Product } from './Product.entity';
+import { Ordered_Prod } from './Orderd_Prod.entity';
 
 
 @Entity({name: 'orders'})
@@ -11,10 +11,13 @@ export class Order {
   @Column({name: 'status'})
   status: string;
 
-  // @ManyToOne(() => User, (user) => user.orders)
-  // @JoinColumn({ name: 'user_id' })
-  // buyer: User;
+  @Column({name: 'date'})
+  date: Date
 
-  @ManyToMany(() => Product, (product) => product.orders) 
-  products: Product[];
+  @ManyToOne(() => User, (user) => user.orders)
+  @JoinColumn({ name: 'user_id' })
+  buyer: User;
+
+  @OneToMany(() => Ordered_Prod, (ordered_prod) => ordered_prod.order)
+  ordered_prods: Ordered_Prod[];
 }

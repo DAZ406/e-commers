@@ -1,5 +1,5 @@
-import { Column, Entity, JoinTable, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
-import { Order } from './Order.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Ordered_Prod } from './Orderd_Prod.entity';
 
 
 @Entity({name: 'products'})
@@ -13,20 +13,9 @@ export class Product {
   @Column({name: 'price'})
   price: number;
 
-  // @Column({name: 'amount'})
-  // amount: number;
+  @Column({name: 'amount'})
+  amount: number;
 
-  @ManyToMany(() => Order, (order) => order.products)
-  @JoinTable({
-    name: 'orders_products',
-    joinColumn: {
-      name: 'product_id',
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: 'order_id',
-      referencedColumnName: 'id',
-    },
-  })
-  orders: Order[];
+  @OneToMany(() => Ordered_Prod, (ordered_prod) => ordered_prod.product)
+  prods_soled: Ordered_Prod[];
 }
