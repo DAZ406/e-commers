@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, JoinColumn, ManyToOne, PrimaryGeneratedColumn, PrimaryColumn, ManyToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
 import { User } from './User.entity';
 import { Product } from './Product.entity';
 
@@ -11,12 +11,10 @@ export class Order {
   @Column({name: 'status'})
   status: string;
 
-  @Column('password')
-  password: string;
-
   @ManyToOne(() => User, (user) => user.orders)
   @JoinColumn({ name: 'user_id' })
   buyer: User;
 
-  
+  @ManyToMany(() => Product, (product) => product.orders) 
+  products: Product[];
 }
