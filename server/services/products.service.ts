@@ -10,6 +10,20 @@ export const getAllProducts = async (): Promise<Product[]> => {
     return await productRepository.find();
 };
 
+export const getProductById = async (id: number): Promise<Product> => {
+    if(!id) {
+        throw new CustomError("you forgot to put an id!");
+    }
+    
+    const product = await productRepository.findOne({ where: { id: id } });
+
+    if(!product) {
+        throw new CustomError("no such user exicts");
+    }
+
+    return product;
+};
+
 export const getProductsByName = async (name: string): Promise<Product[]> => {
    
     return await productRepository.find({ where: { name: ILike(`%${name}%`) } });
