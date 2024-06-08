@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { getOrdersByUserId } from '../services/orders.service';
+import { getOrdersByUserId, addNewOrder } from '../services/orders.service';
 import { CustomError } from '../exeptions/custumeExeption';
 
 export const getOrdersByUserIdHandler = async (
@@ -19,3 +19,17 @@ export const getOrdersByUserIdHandler = async (
         next(err);
     }
 };
+
+export const addNewOrderHandler = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+      try {
+      const orderId = await addNewOrder(await req.body);
+
+      res.status(200).send(orderId);
+      } catch (err) {
+          next(err);
+      }
+  };
