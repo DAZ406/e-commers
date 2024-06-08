@@ -15,4 +15,17 @@ export const getProductsByName = async (name: string): Promise<Product[]> => {
     return await productRepository.find({ where: { name: ILike(`%${name}%`) } });
 };
 
+export const decriseProductAmount = async (amount: number, id: number): Promise<void> => {
+    const productToUpdate = await productRepository.findOne({ where: { id: id } });
+
+    if(!productToUpdate) {
+        throw new CustomError("no such product exist");
+    }
+
+    productToUpdate.amount = productToUpdate.amount - amount;
+
+    await productRepository.save(productToUpdate);
+
+}
+
 
