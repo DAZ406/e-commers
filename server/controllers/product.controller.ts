@@ -1,6 +1,6 @@
 
 import { Request, Response, NextFunction } from 'express';
-import { getAllProducts, getProductsByName, decriseProductAmount } from '../services/products.service';
+import { getAllProducts, getProductsByName, updateProductAmount } from '../services/products.service';
 import { CustomError } from '../exeptions/custumeExeption';
 
 export const getAllProductsHandler = async (
@@ -38,7 +38,7 @@ export const getProductsByNameHandler = async (
       }
   };
 
-  export const decriseProductAmountHandler = async (
+  export const updateProductAmountHandler = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -46,7 +46,7 @@ export const getProductsByNameHandler = async (
       try {
       const id = await parseInt(req.params.id);
       const amount = await parseInt(req.body.purchased_amount);
-      await decriseProductAmount(amount, id);
+      await updateProductAmount(amount, id);
 
       res.status(200).send(`product with the id of ${id} was updated`);
       } catch (err) {
