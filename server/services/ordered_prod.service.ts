@@ -1,6 +1,4 @@
 import { AppDataSource } from '../connection/data-source';
-import { Product } from '../entities/Product.entity';
-import { Order } from '../entities/Order.entity';
 import { getOrdersById } from './orders.service';
 import { getProductById } from './products.service';
 import { Ordered_Prod } from '../entities/Orderd_Prod.entity';

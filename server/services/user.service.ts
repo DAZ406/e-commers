@@ -7,21 +7,6 @@ const userRepository = AppDataSource.getRepository(User);
 
 const key =  process.env.JWT_SECRET || 'zelianodzevo';
 
-export const getUserById = async (id: number): Promise<User> => {
-    if(!id) {
-        throw new CustomError("you forgot to put an id!");
-    }
-    
-    const user = await userRepository.findOne({ where: { id: id } });
-
-    if(!user) {
-        throw new CustomError("no such user exicts");
-    }
-
-    return user;
-};
-
-
 export const authenticate  = async (username: string, password: string): Promise<string  | null> => {
     if((!username) || (!password)) {
         throw new CustomError("One of the fileds is missing! please check that you wrote your username and password");
@@ -35,7 +20,7 @@ export const authenticate  = async (username: string, password: string): Promise
     const token = jwt.sign(
         { id: user.id, username: user.username, password: user.password },
         key,
-        { expiresIn: '1h' } // Token expires in 1 hour
+        { expiresIn: '1h' }
     );
     return token;
 };

@@ -2,7 +2,6 @@ import { AppDataSource } from '../connection/data-source';
 import { Order } from '../entities/Order.entity';
 import { User } from '../entities/User.entity';
 import { CustomError } from '../exeptions/custumeExeption';
-import { getUserById } from '../services/user.service';
 
 const orderRepository = AppDataSource.getRepository(Order);
 
@@ -29,8 +28,6 @@ export const getOrdersByUserId = async (id: number): Promise<Order[]> => {
 }
 
 export const addNewOrder = async (user: User): Promise<Partial<Order>> => {
-    // const order_user = await getUserById(newOrder.user_id);
-    console.log(user);
     const newOrdered = {
         buyer: user
     };
