@@ -12,13 +12,13 @@ export const getAllProducts = async (): Promise<Product[]> => {
 
 export const getProductById = async (id: number): Promise<Product> => {
     if(!id) {
-        throw new CustomError("you forgot to put an id!");
+        throw new CustomError("you forgot to put an id!", 400);
     }
     
     const product = await productRepository.findOne({ where: { id: id } });
 
     if(!product) {
-        throw new CustomError("no such user exicts");
+        throw new CustomError("no such user exicts", 404);
     }
 
     return product;
@@ -33,7 +33,7 @@ export const decriseProductAmount = async (amount: number, id: number): Promise<
     const productToUpdate = await productRepository.findOne({ where: { id: id } });
 
     if(!productToUpdate) {
-        throw new CustomError("no such product exist");
+        throw new CustomError("no such product exist", 404);
     }
 
     productToUpdate.amount = productToUpdate.amount - amount;

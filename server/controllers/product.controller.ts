@@ -12,7 +12,7 @@ export const getAllProductsHandler = async (
     const products = await getAllProducts();
 
     if(products.length === 0) {
-        throw new CustomError("there are no products currenntly. sorry");
+        throw new CustomError("there are no products currenntly. sorry", 410);
     }
     res.status(200).send(products);
     } catch (err) {
@@ -30,7 +30,7 @@ export const getProductsByNameHandler = async (
       const products = await getProductsByName(name);
   
       if(products.length === 0) {
-          throw new CustomError("there are no products that matches. sorry");
+          throw new CustomError("there are no products that matches. sorry", 404);
       }
       res.status(200).send(products);
       } catch (err) {

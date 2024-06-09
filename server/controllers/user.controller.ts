@@ -13,7 +13,7 @@ export const authenticateHandler = async (
     const token = await authenticate (username, password);
 
     if(!token) {
-        throw new CustomError("there was a problem with the data!");
+        throw new CustomError("there was a problem with the data!", 400);
     }
     res.status(200).json({ token });
     } catch (err) {

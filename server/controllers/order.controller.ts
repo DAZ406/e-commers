@@ -12,7 +12,7 @@ export const getOrdersByUserIdHandler = async (
     const orders = await getOrdersByUserId(id);
 
     if(orders.length === 0) {
-        throw new CustomError("you dont have any orders");
+        throw new CustomError("you dont have any orders", 410);
     }
     res.status(200).send(orders);
     } catch (err) {

@@ -7,13 +7,13 @@ const orderRepository = AppDataSource.getRepository(Order);
 
 export const getOrdersById = async (id: number): Promise<Order> => {
     if(!id) {
-        throw new CustomError("you forgot to put an id!");
+        throw new CustomError("you forgot to put an id!", 400);
     }
     
     const order = await orderRepository.findOne({ where: { id: id } });
 
     if(!order) {
-        throw new CustomError("no such order exicts");
+        throw new CustomError("no such order exicts", 404);
     }
 
     return order;

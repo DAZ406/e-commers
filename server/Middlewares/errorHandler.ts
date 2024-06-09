@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
 import { logger } from '../logger';
+import { CustomError } from '../exeptions/custumeExeption'
 
 export const errorLogger = (
-  error: Error,
+  error: CustomError,
   req: Request,
   res: Response,
   next: NextFunction
@@ -12,11 +13,14 @@ export const errorLogger = (
 };
 
 export const erorrHandler = (
-  error: Error,
+  error: CustomError,
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  res.status(500).send(error.message);
+  if(!error.status) {
+    res.status(500).send(error.message);
+  }
+  res.status(error.status).send(error.message);
   next(error);
 };
