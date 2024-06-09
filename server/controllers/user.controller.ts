@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import { getUserByInfo, addNewUser } from '../services/user.service';
+import { authenticate , addNewUser } from '../services/user.service';
 import { CustomError } from '../exeptions/custumeExeption';
 
-export const getUserByInfoHandler = async (
+export const authenticateHandler = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -10,12 +10,12 @@ export const getUserByInfoHandler = async (
     const username = await req.body.username;
     const password = await req.body.password;
     try {
-    const answer = await getUserByInfo(username, password);
+    const token = await authenticate (username, password);
 
-    if(!answer) {
+    if(!token) {
         throw new CustomError("there was a problem with the data!");
     }
-    res.status(200).send(`${answer.id}`);
+    res.status(200).json({ token });
     } catch (err) {
         next(err);
     }

@@ -1,5 +1,6 @@
 import { AppDataSource } from '../connection/data-source';
 import { Order } from '../entities/Order.entity';
+import { User } from '../entities/User.entity';
 import { CustomError } from '../exeptions/custumeExeption';
 import { getUserById } from '../services/user.service';
 
@@ -13,7 +14,7 @@ export const getOrdersById = async (id: number): Promise<Order> => {
     const order = await orderRepository.findOne({ where: { id: id } });
 
     if(!order) {
-        throw new CustomError("no such user exicts");
+        throw new CustomError("no such order exicts");
     }
 
     return order;
@@ -27,12 +28,11 @@ export const getOrdersByUserId = async (id: number): Promise<Order[]> => {
     .getMany()
 }
 
-export const addNewOrder = async (newOrder: any): Promise<Partial<Order>> => {
-    const order_user = await getUserById(newOrder.user_id);
+export const addNewOrder = async (user: User): Promise<Partial<Order>> => {
+    // const order_user = await getUserById(newOrder.user_id);
+    console.log(user);
     const newOrdered = {
-        status: newOrder.status,
-        date: newOrder.date,
-        buyer: order_user
+        buyer: user
     };
     await orderRepository.insert(newOrdered);
 

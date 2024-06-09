@@ -26,7 +26,7 @@ export const addNewOrderHandler = async (
     next: NextFunction
   ) => {
       try {
-      const orderId = await addNewOrder(await req.body);
+      const orderId = await addNewOrder(await req.body.user);
 
       res.status(200).send(orderId);
       } catch (err) {

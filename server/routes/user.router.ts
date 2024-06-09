@@ -1,9 +1,9 @@
 import express from 'express';
-import { getUserByInfoHandler, addNewUserHandler } from '../controllers/user.controller';
+import { authenticateHandler, addNewUserHandler } from '../controllers/user.controller';
 
 const router = express.Router();
 
-router.get("/", getUserByInfoHandler);
+router.post("/", authenticateHandler);
 
 router.post("/sighnup", addNewUserHandler);
 
