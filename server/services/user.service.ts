@@ -33,3 +33,11 @@ export const addNewUser = async (username: string, password: string): Promise<Ob
 
     return userRepository.insert(newUser);
 };
+
+export const deleteUser = async (user: User): Promise<void> => {
+    console.log(user);
+
+    await  userRepository.delete({ id: user.id });
+
+};
+

@@ -14,7 +14,7 @@ export class Order {
   @Column({name: 'date'})
   date: Date
 
-  @ManyToOne(() => User, (user) => user.orders)
+  @ManyToOne(() => User, (user) => user.orders, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
   buyer: User;
 

@@ -13,6 +13,6 @@ export class User {
   @Column({name: 'password'})
   password: String;
 
-  @OneToMany(() => Order, (order) => order.buyer)
+  @OneToMany(() => Order, (order) => order.buyer )
   orders: Order[];
 }

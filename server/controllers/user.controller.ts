@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { authenticate , addNewUser } from '../services/user.service';
+import { authenticate , addNewUser, deleteUser } from '../services/user.service';
 import { CustomError } from '../exeptions/custumeExeption';
 
 export const authenticateHandler = async (
@@ -38,3 +38,19 @@ export const addNewUserHandler = async (
       }
   
   };
+
+  export const deleteUserHandler = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+      try {
+      await deleteUser(await req.body.user);
+  
+      res.status(200).send('user deleted successfully');
+      } catch (err) {
+          next(err);
+      }
+  
+  };
+
