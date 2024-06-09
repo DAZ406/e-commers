@@ -38,3 +38,23 @@ export const deleteUser = async (user: User): Promise<void> => {
     await  userRepository.delete({ id: user.id });
 };
 
+export const updateUser = async (user: User, newUsername: string, newPassword: string): Promise<string> => {
+    const userToUpdate = await  userRepository.findOne({ where: { id: user.id } });
+
+    if(!userToUpdate) {
+        throw new CustomError("there no such user", 404);
+    }
+
+    userToUpdate.username = newUsername;
+    userToUpdate.password = newPassword;
+
+    await userRepository.save(userToUpdate);
+
+    const token = jwt.sign(
+        { id: userToUpdate.id, username: userToUpdate.username, password: userToUpdate.password },
+        key,
+        { expiresIn: '1h' }
+    );
+    return token;
+};
+

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { authenticate , addNewUser, deleteUser } from '../services/user.service';
+import { authenticate , addNewUser, deleteUser, updateUser } from '../services/user.service';
 import { CustomError } from '../exeptions/custumeExeption';
 
 export const authenticateHandler = async (
@@ -53,4 +53,20 @@ export const addNewUserHandler = async (
       }
   
   };
+
+  export const updateUserrHandler = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+      try {
+      const newTocken = await updateUser(await req.body.user, await req.body.newUsername, await req.body.newPassword);
+  
+      res.status(200).send(newTocken);
+      } catch (err) {
+          next(err);
+      }
+  
+  };
+
 
