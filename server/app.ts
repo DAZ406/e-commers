@@ -6,11 +6,13 @@ import userRouter from "./routes/user.router"
 import productRouter from './routes/product.router'
 import orderRouter from './routes/order.router';
 import orderedProdRouter from './routes/ordered_prods.router';
+import cors from 'cors';
 const PORT = 3000;
 
 AppDataSource.initialize()
   .then(() => {
     const app = express();
+    app.use(cors());
     app.use(express.json());
     app.use(loggerMiddleware);
     app.use('/users', userRouter);

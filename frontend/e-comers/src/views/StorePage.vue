@@ -1,11 +1,11 @@
 <template>
   <div>
     <b-list-group horizontal id="itemList">
-      <b-list-group-item v-for="item in itemsForList" :key="item.id">
-        <h1>{{item.header}}</h1>
-        <span>{{item.text}}</span>
+      <b-list-group-item class="goldy" v-for="item in itemsForList" :key="item.id">
+        <book-card :book="item"/>
       </b-list-group-item>
     </b-list-group>
+    <div class="pagBar">
     <b-pagination
       v-model="currentPage"
       :total-rows="rows"
@@ -13,71 +13,55 @@
       aria-controls="itemList"
       align="center"
     ></b-pagination>
+    </div>
   </div>
 </template>
 <script>
+import { getAllProducts } from "../axios/axiosFunctions";
+import BookCard from '../components/BookCard.vue';
 export default {
-    data() {
- return { currentPage: 1,
-  perPage: 3,
-  date: [
-    {
-      header: 'item 1',
-      text: '❤️',
-      id: 1,
+  data() {
+    return { currentPage: 0, perPage: 0, date: [] };
+  },
+   components: {
+    BookCard
+  },
+  async created() {
+    await this.createTheList();
+  },
+  methods: {
+    async createTheList() {
+      this.currentPage = 1;
+      this.perPage = 3;
+      this.date = (await getAllProducts()).data;
+      console.log(this.date);
     },
-    {
-      header: 'item 2',
-      text: '🗿',
-      id: 2,
-    },
-    {
-      header: 'item 3',
-      text: '⛺️',
-      id: 3,
-    },
-    {
-      header: 'item 4',
-      text: '🌄',
-      id: 4,
-    },
-    {
-      header: 'item 5',
-      text: '💎',
-      id: 5,
-    },
-    {
-      header: 'item 6',
-      text: '⏳',
-      id: 6,
-    },
-    {
-      header: 'item 7',
-      text: '🧱',
-      id: 7,
-    },
-  ],
-  }
-    },
+  },
   computed: {
     itemsForList() {
-    return this.date.slice(
-      (this.currentPage - 1) * this.perPage,
-      this.currentPage * this.perPage,
-    );
+      return this.date.slice(
+        (this.currentPage - 1) * this.perPage,
+        this.currentPage * this.perPage
+      );
+    },
+    rows() {
+      return this.date.length;
+    },
   },
-  rows() {
-    return this.date.length;
-  }
-  }
-  
-}
+};
 </script>
 
 <style>
 #itemList {
-    display: flex;
-    justify-content: space-evenly;
-    align-content:center;
+  display: flex;
+  justify-content: space-evenly;
+  align-content: center;
+}
+.goldy {
+ background-color: gold !important;
+ border-color: brown !important;
+}
+.pagBar {
+    margin-top: 100px !important;
 }
 </style>

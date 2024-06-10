@@ -1,5 +1,4 @@
 <template>
-  <div>
   <b-card
     img-src="https://www.cityofboise.org/media/14754/shutterstock_523462210.jpg?width=1200&mode=max&upscale=false"
     img-alt="Image"
@@ -7,29 +6,33 @@
     tag="article"
     style="max-width: 20rem;"
     class="mb-2"
-    body-bg-variant="primary"
+    body-bg-variant="info"
   >
-    <b-card-title class="text-center"> <h2> name </h2> </b-card-title>
+    <b-card-title class="text-center myTitle"> {{book.name}} </b-card-title>
     <b-card-text class="text-center">
-      <h4> Price: price </h4>
-      <h5> In Stock: amount </h5>
+      <h4> Price: {{ book.price }} </h4>
+      <h5> In Stock: {{ book.amount }} </h5>
     </b-card-text>
 
-    <b-button href="#" variant="success">Buy Now!</b-button>
+    <template #footer>
+       <b-button href="#" variant="success">Buy Now!</b-button>
+      </template>
+
   </b-card>
-</div>
 </template>
 
 <script>
 export default {
     name: 'BookCard',
-    props: {
-    book: Object
-  }
+    props: { 
+     book: Object
+    }
 
 }
 </script>
 
 <style>
-
+.myTitle {
+    font-family: fantasy;
+}
 </style>
