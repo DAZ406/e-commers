@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { getOrdersByUserId, addNewOrder } from '../services/orders.service';
+import { getOrdersByUserId, addNewOrder, updateStatuse } from '../services/orders.service';
 import { CustomError } from '../exeptions/custumeExeption';
 
 export const getOrdersByUserIdHandler = async (
@@ -33,3 +33,21 @@ export const addNewOrderHandler = async (
           next(err);
       }
   };
+
+  export const updateStatuseHandler = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+      try {
+       await updateStatuse(parseInt(req.params.order_id), await req.body.status);
+
+      res.status(200).send(`status of order ${parseInt(req.params.order_id)} was updated`);
+      } catch (err) {
+          next(err);
+      }
+  };
+
+  
+
+

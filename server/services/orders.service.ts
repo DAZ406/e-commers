@@ -35,3 +35,12 @@ export const addNewOrder = async (user: User): Promise<Partial<Order>> => {
 
     return newOrdered;
 }
+
+export const updateStatuse = async (id: number, status: string): Promise<void> => {
+    if(!status) {
+        throw new CustomError("you didnt send a status...", 400);
+    }
+    const order = await getOrdersById(id);
+    order.status = status;
+    await orderRepository.save(order);
+}
