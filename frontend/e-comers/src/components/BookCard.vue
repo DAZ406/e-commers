@@ -7,11 +7,12 @@
     style="max-width: 20rem"
     class="mb-2"
     body-bg-variant="info"
+    footer-bg-variant="secondary"
   >
     <b-card-title class="text-center myTitle"> {{ book.name }} </b-card-title>
     <b-card-text class="text-center">
-      <h4>Price: {{ book.price }}</h4>
-      <h5>In Stock: {{ book.amount }}</h5>
+      <h4 class="myInfoOfBook">Price: {{ book.price }}</h4>
+      <h5 class="myInfoOfBook">In Stock: {{ book.amount }}</h5>
     </b-card-text>
 
     <template #footer>
@@ -32,5 +33,8 @@ export default {
 <style>
 .myTitle {
   font-family: fantasy;
+}
+.myInfoOfBook {
+font-family:'Times New Roman', Times, serif;
 }
 </style>

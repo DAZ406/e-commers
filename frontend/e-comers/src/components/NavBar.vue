@@ -63,8 +63,12 @@ export default {
 }
 .myLogo {
   padding: 10px;
+  color: goldenrod !important;
+  font-style: italic;
+  font-weight: bold;
 }
 .myLink {
   font-family: cursive;
+  font-weight: bold;
 }
 </style>

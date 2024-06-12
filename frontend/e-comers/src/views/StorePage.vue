@@ -21,7 +21,7 @@ import { getAllProducts } from "../axios/axiosFunctions";
 import BookCard from '../components/BookCard.vue';
 export default {
   data() {
-    return { currentPage: 0, perPage: 0, date: [] };
+    return { currentPage: 0, perPage: 0, books: [] };
   },
    components: {
     BookCard
@@ -33,19 +33,18 @@ export default {
     async createTheList() {
       this.currentPage = 1;
       this.perPage = 3;
-      this.date = (await getAllProducts()).data;
-      console.log(this.date);
+      this.books = (await getAllProducts()).data;
     },
   },
   computed: {
     itemsForList() {
-      return this.date.slice(
+      return this.books.slice(
         (this.currentPage - 1) * this.perPage,
         this.currentPage * this.perPage
       );
     },
     rows() {
-      return this.date.length;
+      return this.books.length;
     },
   },
 };
