@@ -1,7 +1,14 @@
 <template>
   <div id="app">
     <nav-bar/>
-    <router-view/>
+     <transition
+      @before-enter="beforeEnter"
+      @enter="enter"
+      @leave="leave"
+      mode="out-in"
+    >
+      <router-view :key="$route.fullPath"></router-view>
+    </transition>
   </div>
 </template>
 
@@ -12,6 +19,24 @@ export default {
   components: { NavBar },
   comments: {
     NavBar
+  },
+   methods: {
+    beforeEnter(el) {
+      el.style.opacity = 0;
+    },
+    enter(el, done) {
+      const delay = 50;
+      setTimeout(() => {
+        el.style.transition = "opacity 0.5s";
+        el.style.opacity = 1;
+        done();
+      }, delay);
+    },
+    leave(el, done) {
+      el.style.transition = "opacity 0.5s";
+      el.style.opacity = 0;
+      setTimeout(done, 500);
+    }
   }
   
 }
@@ -37,6 +62,7 @@ nav a {
 }
 
 nav a.router-link-exact-active {
-  color: #b94242;
+  color:blueviolet
 }
+
 </style>
