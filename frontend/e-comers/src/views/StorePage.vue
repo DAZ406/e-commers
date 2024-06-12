@@ -29,6 +29,7 @@
 </template>
 <script>
 import { getAllProducts, filterProducts } from "../axios/axiosFunctions";
+import Swal from 'sweetalert2';
 import BookCard from "../components/BookCard.vue";
 export default {
   data() {
@@ -47,7 +48,17 @@ export default {
       this.books = (await getAllProducts()).data;
     },
     async filterTheBooks() {
+      try{
       this.books = (await filterProducts(this.searchText)).data;
+      } catch(err) {
+        Swal.fire({
+            title: "There is no book that matches your request!",
+            showConfirmButton: true,
+            confirmButtonText: "OK",
+            icon: 'error'
+        }
+        )
+      }
     }
   },
   computed: {
