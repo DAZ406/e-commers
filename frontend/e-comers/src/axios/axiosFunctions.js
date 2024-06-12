@@ -5,3 +5,9 @@ export const getAllProducts = async () => {
 
     return response;
 }
+
+export const filterProducts = async (name) => {
+    const response = await dbConnect.get(`/products/${name}`);
+
+    return response;
+}

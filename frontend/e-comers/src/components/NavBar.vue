@@ -58,9 +58,9 @@ export default {
   display: flex !important;
   justify-content: space-between !important;
 }
-.myNavBar {
+/* .myNavBar {
   margin-bottom: 30px;
-}
+} */
 .myLogo {
   padding: 10px;
   color: goldenrod !important;
