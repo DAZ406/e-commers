@@ -16,7 +16,14 @@
     </b-card-text>
 
     <template #footer>
-      <b-button href="#" variant="success">Buy Now!</b-button>
+      <b-button @click="showModal" variant="success">Buy Now!</b-button>
+      <b-modal ref="my-modal" hide-footer>
+        <h3> How much would you like to buy? </h3>
+       <b-form-input type="text" v-model="numberOfBooks" placeholder="Enter your name"></b-form-input>
+      <b-button class="mt-3" variant="outline-danger" block @click="hideModal">Close Me</b-button>
+    </b-modal>
+      
+    
     </template>
   </b-card>
 </template>
@@ -27,7 +34,26 @@ export default {
   props: {
     book: Object,
   },
-};
+  data() {
+    return {
+      modalShow: false,
+      numberOfBooks: 0
+    }
+  },
+  methods: {
+  showModal() {
+        this.$refs['my-modal'].show()
+      },
+      hideModal() {
+        this.$refs['my-modal'].hide()
+      },
+      toggleModal() {
+        // We pass the ID of the button that we want to return focus to
+        // when the modal has hidden
+        this.$refs['my-modal'].toggle('#toggle-btn')
+      }
+  }
+}
 </script>
 
 <style>
@@ -36,5 +62,10 @@ export default {
 }
 .myInfoOfBook {
 font-family:'Times New Roman', Times, serif;
+}
+.myAmountModal {
+  display: flex;
+  justify-content: center;
+  align-content: center;
 }
 </style>
