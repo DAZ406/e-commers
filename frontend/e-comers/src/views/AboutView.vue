@@ -1,33 +1,66 @@
 <template>
   <div class="registerContainer">
-    <b-card header="your books in the cart:" class="loginCard">
+    <b-card header="Your books in the cart:" header-bg-variant="primary" class="loginCard">
       <b-list-group>
-        <b-list-group-item
+        <b-list-group-item v-for="(book, index) in this.$store.state.cart" :key="book.id"
           class="d-flex justify-content-between align-items-center"
         >
-          Cras justo odio
-          <b-badge variant="primary" pill>14</b-badge>
-        </b-list-group-item>
-        <b-list-group-item
-          class="d-flex justify-content-between align-items-center"
-        >
-          Cras justo odio
-          <b-badge variant="primary" pill>14</b-badge>
-        </b-list-group-item>
-        <b-list-group-item
-          class="d-flex justify-content-between align-items-center"
-        >
-          Cras justo odio
-          <b-badge variant="primary" pill>14</b-badge>
+          {{book.product.name}}
+         <b-badge class="myBadge1"> Amount: {{book.purchased_amount}}</b-badge>
+         <b-badge class="myBadge2"> Totall cost: {{parseInt(book.purchased_amount * book.product.price)}}₪</b-badge>
+         <b-button pill variant="outline-danger" @click="changeTheSystem(parseInt(index))">Remove Item</b-button>
         </b-list-group-item>
       </b-list-group>
 
       <p class="card-text mt-2">
-        total price: {{ }}
+        Total price: {{ getTotallPrice }}₪
       </p>
+      <b-button squared variant="success" @click="startTransaction">Pay Now!</b-button>
     </b-card>
   </div>
 </template>
+<script>
+import { createNewOrder, addNewOrderProduct } from '../axios/axiosFunctions';
+import Swal from "sweetalert2";
+export default {
+  methods: {
+    changeTheSystem(index) {
+    this.$store.state.cart.splice(parseInt(index) , 1);
+    },
+    async startTransaction() {
+    try{
+      console.log(await createNewOrder(localStorage.getItem("token")));
+      const order_id = await (await createNewOrder(localStorage.getItem("token"))).data.user.id;
+      await this.$store.state.cart.map(async (book) => {
+        console.log(order_id);
+        console.log( book.product.id);
+        console.log(book.purchased_amount);
+        await addNewOrderProduct(order_id, book.product.id, book.purchased_amount);
+      });
+       Swal.fire({
+          title: "Thank you for the purchase!",
+          showConfirmButton: true,
+          confirmButtonText: "OK",
+          icon: "success",
+        });
+        this.$router.push("/store");
+    } catch (err)  {
+      console.log(err.message);
+    }
+  }
+  },
+  computed: {
+    getTotallPrice() {
+      let totallPrice = 0;
+      this.$store.state.cart.map((book) => {
+        totallPrice += parseInt(book.purchased_amount * book.product.price);
+      });
+      return totallPrice;
+    }
+  }
+}
+</script>
+
 
 <style scoped>
 .loginCard {
@@ -46,5 +79,11 @@
 .myButtonGroup {
   display: flex;
   align-content:space-between;
+}
+.myBadge1 {
+  background-color:darkorange;
+}
+.myBadge2 {
+  background-color:darkgreen;
 }
 </style>

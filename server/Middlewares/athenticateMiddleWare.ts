@@ -5,6 +5,7 @@ import { User } from '../entities/User.entity';
 const key =  process.env.JWT_SECRET || 'zelianodzevo';
 
 export const verifyToken = (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.headers)
     const token = req.headers['authorization']?.split(" ")[1];
 
     if (!token) {

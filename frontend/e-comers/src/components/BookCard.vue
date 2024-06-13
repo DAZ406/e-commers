@@ -11,7 +11,7 @@
   >
     <b-card-title class="text-center myTitle"> {{ book.name }} </b-card-title>
     <b-card-text class="text-center">
-      <h4 class="myInfoOfBook">Price: {{ book.price }}</h4>
+      <h4 class="myInfoOfBook">Price: {{ book.price }}₪</h4>
       <h5 class="myInfoOfBook">
         In Stock: {{ parseInt(this.book.amount - this.totallProductPurchasedAmount) }}
       </h5>

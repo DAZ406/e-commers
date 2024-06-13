@@ -28,3 +28,21 @@ export const validateToken = async (token) => {
 
     return response;
 }
+
+export const createNewOrder = async (token) => {
+    const headers = {
+        'authorization': `${token}`
+    };
+      
+    const response = await dbConnect.post(`/orders/new-order`,{ headers } );
+
+    return response;
+}
+export const addNewOrderProduct = async (order_id, product_id, purchased_amount) => {
+    const response = await dbConnect.post(`/ordered-products/new-ordered-product`,{purchased_amount: purchased_amount,
+        order_id: order_id,
+        product_id: product_id
+    });
+
+    return response;
+}
