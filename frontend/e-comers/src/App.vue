@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <nav-bar/>
+    <nav-bar v-if= "$route.path !== '/'"></nav-bar>
      <transition
       @before-enter="beforeEnter"
       @enter="enter"

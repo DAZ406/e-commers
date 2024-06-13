@@ -11,3 +11,12 @@ export const filterProducts = async (name) => {
 
     return response;
 }
+
+export const validateUser = async (username, password) => {
+    const response = await dbConnect.post(`/users`,{
+        username: username,
+        password: password
+    });
+
+    return response;
+}
