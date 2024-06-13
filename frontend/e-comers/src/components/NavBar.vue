@@ -37,7 +37,7 @@
                 <p>What would you like to do today?</p>
                 <nav class="mb-3"  v-if="this.$store.state.currUser">
                   <b-nav vertical>
-                    <b-nav-item to="/change-profile">Change profile</b-nav-item>
+                    <b-nav-item to="/change-profile">Update profile</b-nav-item>
                     <b-nav-item to="/history">Order history</b-nav-item>
                     <b-nav-item @click="deleteUser">Delete profile</b-nav-item>
                     <b-nav-item @click="disconect">Disconnect</b-nav-item>
