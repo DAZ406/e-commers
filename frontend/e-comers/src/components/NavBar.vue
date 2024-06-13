@@ -13,7 +13,7 @@
             <span>
               <b-icon icon="cart3" font-scale="2" variant="light"></b-icon
             ></span>
-            {{this.$store.state.cart.length}}
+            {{ this.$store.state.cart.length }}
           </b-badge>
         </b-navbar-nav>
 
@@ -26,18 +26,29 @@
                 variant="light"
               ></b-icon
             ></b-button>
-            <b-sidebar id="sidebar-right" title="Sidebar" right shadow>
+            <b-sidebar id="sidebar-right"  bg-variant="dark" text-variant="warning" backdrop right shadow>
+              <h3 v-if="!this.$store.state.currUser" class="myLink">
+                Wait! Who are you?
+              </h3>
+              <h3 v-else class="myLink">
+                Wellcome Back {{ this.$store.state.currUser.username }}!
+              </h3>
               <div class="px-3 py-2">
-                <p>
-                  Cras mattis consectetur purus sit amet fermentum. Cras justo
-                  odio, dapibus ac facilisis in, egestas eget quam. Morbi leo
-                  risus, porta ac consectetur ac, vestibulum at eros.
-                </p>
-                <b-img
-                  src="https://picsum.photos/500/500/?image=54"
-                  fluid
-                  thumbnail
-                ></b-img>
+                <p>What would you like to do today?</p>
+                <nav class="mb-3"  v-if="this.$store.state.currUser">
+                  <b-nav vertical>
+                    <b-nav-item to="/change-profile">Change profile</b-nav-item>
+                    <b-nav-item to="/history">Order history</b-nav-item>
+                    <b-nav-item @click="deleteUser">Delete profile</b-nav-item>
+                    <b-nav-item @click="disconect">Disconnect</b-nav-item>
+                  </b-nav>
+                </nav>
+                <nav class="mb-3"  v-else>
+                  <b-nav vertical>
+                    <b-nav-item to="/sign-in">Sign in!</b-nav-item>
+                    <b-nav-item to="/">Log in!</b-nav-item>
+                  </b-nav>
+                </nav>
               </div>
             </b-sidebar>
           </div>
@@ -48,8 +59,31 @@
 </template>
 
 <script>
+import { validateToken } from "../axios/axiosFunctions";
+import Swal from "sweetalert2";
 export default {
   name: "NavBar",
+  async created() {
+    await this.createNavBar();
+  },
+  methods: {
+    async createNavBar() {
+      try {
+        this.$store.state.currUser = {
+          username: (await validateToken(localStorage.getItem("token"))).data
+            .user.username,
+        };
+      } catch (err) {
+        Swal.fire({
+          title:
+            "You didnt register! We advise you to log-in or create a new acount!",
+          showConfirmButton: true,
+          confirmButtonText: "OK",
+          icon: "warning",
+        });
+      }
+    },
+  },
 };
 </script>
 
@@ -58,9 +92,6 @@ export default {
   display: flex !important;
   justify-content: space-between !important;
 }
-/* .myNavBar {
-  margin-bottom: 30px;
-} */
 .myLogo {
   padding: 10px;
   color: goldenrod !important;

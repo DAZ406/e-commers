@@ -20,7 +20,7 @@ export const authenticate  = async (username: string, password: string): Promise
     const token = jwt.sign(
         { id: user.id, username: user.username, password: user.password },
         key,
-        { expiresIn: '1h' }
+        { expiresIn: '24h' }
     );
     return token;
 };

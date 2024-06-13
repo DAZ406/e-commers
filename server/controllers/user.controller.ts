@@ -69,4 +69,18 @@ export const addNewUserHandler = async (
   
   };
 
+  export const getTheUserByTokenHandler = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+      try {
+      const user = await req.body;
+      res.status(200).send(user);
+      } catch (err) {
+          next(err);
+      }
+  
+  };
+
 

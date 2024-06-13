@@ -38,7 +38,7 @@
 
 <script>
 import router from '@/router';
-import { validateUser } from '../axios/axiosFunctions';
+import { validateUser, validateToken } from '../axios/axiosFunctions';
 import Swal from 'sweetalert2';
 
 export default {
@@ -49,6 +49,17 @@ export default {
       password: '',
     };
   },
+  async created() {
+    try{
+     const user = (await validateToken(localStorage.getItem("token"))).data.user;
+      this.$store.state.currUser = {
+      username: user.username
+      };
+      router.push('./store');
+    } catch(err) {
+      this.$store.state.currUser = null;
+    }
+  },
   methods: {
     goToSignIn() {
       router.push("./sigh-in");
@@ -56,8 +67,7 @@ export default {
     async checkTheUser() {
       try {
       const user = (await validateUser(this.username, this.password)).data;
-      console.log(user);
-      localStorage.setItem('token',`Bearer  ${user.token}`);
+      localStorage.setItem('token',`Bearer ${user.token}`);
       this.$store.state.currUser = {
       username: this.username
       };

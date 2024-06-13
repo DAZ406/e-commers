@@ -13,10 +13,18 @@ export const filterProducts = async (name) => {
 }
 
 export const validateUser = async (username, password) => {
-    const response = await dbConnect.post(`/users`,{
+    const response = await dbConnect.post(`/users/log-in`,{
         username: username,
         password: password
     });
+
+    return response;
+}
+
+export const validateToken = async (token) => {
+    const response = await dbConnect.get(`/users/authenticate`,{headers: {
+        authorization: token
+      }});
 
     return response;
 }
