@@ -8,12 +8,12 @@
       <b-collapse id="nav-collapse" is-nav class="myNavBarCobtrolle">
         <b-navbar-nav>
           <b-nav-item class="myLink" to="/store">Store Page</b-nav-item>
-          <b-nav-item class="myLink" to="/about">Cashire</b-nav-item>
+          <b-nav-item class="myLink" to="/about">Cashier</b-nav-item>
           <b-badge variant="light">
             <span>
               <b-icon icon="cart3" font-scale="2" variant="light"></b-icon
             ></span>
-            9
+            {{this.$store.state.cart.length}}
           </b-badge>
         </b-navbar-nav>
 

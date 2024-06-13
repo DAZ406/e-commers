@@ -12,23 +12,34 @@
     <b-card-title class="text-center myTitle"> {{ book.name }} </b-card-title>
     <b-card-text class="text-center">
       <h4 class="myInfoOfBook">Price: {{ book.price }}</h4>
-      <h5 class="myInfoOfBook">In Stock: {{ book.amount }}</h5>
+      <h5 class="myInfoOfBook">
+        In Stock: {{ parseInt(this.book.amount - this.totallProductPurchasedAmount) }}
+      </h5>
     </b-card-text>
 
     <template #footer>
       <b-button @click="showModal" variant="success">Buy Now!</b-button>
       <b-modal ref="my-modal" hide-footer>
-        <h3> How much would you like to buy? </h3>
-       <b-form-input type="text" v-model="numberOfBooks" placeholder="Enter your name"></b-form-input>
-      <b-button class="mt-3" variant="outline-danger" block @click="hideModal">Close Me</b-button>
-    </b-modal>
-      
-    
+        <h3>How much would you like to buy?</h3>
+        <b-form-input
+          type="number"
+          v-model="numberOfBooks"
+          placeholder="please enter the amount here"
+        ></b-form-input>
+        <b-button
+          class="mt-3"
+          variant="outline-success"
+          block
+          @click="addItemToCart"
+          >BUY BUY BUY!</b-button
+        >
+      </b-modal>
     </template>
   </b-card>
 </template>
 
 <script>
+import Swal from "sweetalert2";
 export default {
   name: "BookCard",
   props: {
@@ -36,24 +47,56 @@ export default {
   },
   data() {
     return {
-      modalShow: false,
-      numberOfBooks: 0
-    }
+      numberOfBooks: 0,
+      totallProductPurchasedAmount: 0,
+    };
+  },
+  created() {
+    this.findAmountOfProduct();
   },
   methods: {
-  showModal() {
-        this.$refs['my-modal'].show()
-      },
-      hideModal() {
-        this.$refs['my-modal'].hide()
-      },
-      toggleModal() {
-        // We pass the ID of the button that we want to return focus to
-        // when the modal has hidden
-        this.$refs['my-modal'].toggle('#toggle-btn')
+    findAmountOfProduct() {
+      this.$store.state.cart.map((item) => {
+        if (item.product.id === this.book.id) {
+          this.totallProductPurchasedAmount += parseInt(item.purchased_amount);
+        }
+      });
+    },
+    showModal() {
+      this.$refs["my-modal"].show();
+    },
+    addItemToCart() {
+      if (this.numberOfBooks <= 0) {
+        Swal.fire({
+          title: "You need to buy at least one book!",
+          showConfirmButton: true,
+          confirmButtonText: "OK",
+          icon: "error",
+        });
+      } else if (parseInt(this.book.amount) - this.totallProductPurchasedAmount - this.numberOfBooks < 0) {
+        Swal.fire({
+          title: "We dont have that much in the store! try to buy a bit less",
+          showConfirmButton: true,
+          confirmButtonText: "OK",
+          icon: "error",
+        });
+      } else {
+        this.$store.state.cart.push({
+          product: this.book,
+          purchased_amount: this.numberOfBooks,
+        });
+        this.totallProductPurchasedAmount += parseInt(this.numberOfBooks);
+        Swal.fire({
+          title: "An item was plased in your shoping cart!",
+          showConfirmButton: true,
+          confirmButtonText: "OK",
+          icon: "success",
+        });
+        this.$refs["my-modal"].hide();
       }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style>
@@ -61,7 +104,7 @@ export default {
   font-family: fantasy;
 }
 .myInfoOfBook {
-font-family:'Times New Roman', Times, serif;
+  font-family: "Times New Roman", Times, serif;
 }
 .myAmountModal {
   display: flex;
