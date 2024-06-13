@@ -61,6 +61,7 @@
 <script>
 import { validateToken } from "../axios/axiosFunctions";
 import Swal from "sweetalert2";
+import router from '../router/index';
 export default {
   name: "NavBar",
   async created() {
@@ -83,6 +84,11 @@ export default {
         });
       }
     },
+    disconect() {
+      this.$store.state.currUser = null;
+      localStorage.removeItem("token");
+      router.push("/");
+    }
   },
 };
 </script>
