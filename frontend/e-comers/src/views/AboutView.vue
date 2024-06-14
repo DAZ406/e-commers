@@ -15,12 +15,12 @@
       <p class="card-text mt-2">
         Total price: {{ getTotallPrice }}₪
       </p>
-      <b-button squared variant="success" @click="startTransaction">Pay Now!</b-button>
+      <b-button v-if="this.$store.state.cart.length !== 0" squared variant="success" @click="startTransaction">Pay Now!</b-button>
     </b-card>
   </div>
 </template>
 <script>
-import { createNewOrder, addNewOrderProduct } from '../axios/axiosFunctions';
+import { createNewOrder, addNewOrderProduct, validateToken, updateProductAmount } from '../axios/axiosFunctions';
 import Swal from "sweetalert2";
 export default {
   methods: {
@@ -29,14 +29,12 @@ export default {
     },
     async startTransaction() {
     try{
-      console.log(await createNewOrder(localStorage.getItem("token")));
-      const order_id = await (await createNewOrder(localStorage.getItem("token"))).data.user.id;
+      const order_id = (await createNewOrder((await validateToken(localStorage.getItem("token"))).data.user)).data.buyer.id;
       await this.$store.state.cart.map(async (book) => {
-        console.log(order_id);
-        console.log( book.product.id);
-        console.log(book.purchased_amount);
         await addNewOrderProduct(order_id, book.product.id, book.purchased_amount);
+        await updateProductAmount(book.product.id, parseInt(book.product.amount - book.purchased_amount));
       });
+      this.$store.state.cart = [];
        Swal.fire({
           title: "Thank you for the purchase!",
           showConfirmButton: true,
@@ -45,7 +43,12 @@ export default {
         });
         this.$router.push("/store");
     } catch (err)  {
-      console.log(err.message);
+       Swal.fire({
+          title: "It seems that your validetion isnt working. Log-in or create an acount",
+          showConfirmButton: true,
+          confirmButtonText: "OK",
+          icon: "error",
+        });
     }
   }
   },

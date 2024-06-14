@@ -45,7 +45,7 @@ export const getProductsByNameHandler = async (
   ) => {
       try {
       const id = await parseInt(req.params.id);
-      const amount = await parseInt(req.body.purchased_amount);
+      const amount = await parseInt(req.body.amount);
       await updateProductAmount(amount, id);
 
       res.status(200).send(`product with the id of ${id} was updated`);
