@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import LogIn from '../views/LogIn.vue'
 import StorePage from '../views/StorePage.vue'
+import SignIn from '../views/SignIn.vue'
 
 Vue.use(VueRouter)
 
@@ -24,6 +25,11 @@ const routes = [
     name: 'store',
     component: StorePage
   },
+  {
+    path: '/sign-in',
+    name: 'signin',
+    component: SignIn
+  }
 ]
 
 const router = new VueRouter({

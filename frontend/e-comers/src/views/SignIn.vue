@@ -1,13 +1,13 @@
 <template>
   <div class="registerContainer">
     <b-card
-      header="WELLCOME TO KoobABook!"
+      header="Create your new KoobABook acount!"
       header-bg-variant="primary"
       header-text-variant="warning"
       align="center"
       class="loginCard"
     >
-    <p> Please enter your user information </p>
+    <p> Please enter your acount information </p>
       <b-form-group
         label="USERNAME"
         label-for="nested-street"
@@ -15,7 +15,7 @@
         label-align-sm="right"
         class="myFormForUser"
       >
-        <b-form-input type="text" v-model="username" class="myUserInput"></b-form-input>
+        <b-form-input v-model="username" class="myUserInput"></b-form-input>
       </b-form-group>
 
       <b-form-group
@@ -25,11 +25,11 @@
         label-align-sm="right"
         class="myFormForUser"
       >
-        <b-form-input type="password" v-model="password" class="myUserInput"></b-form-input>
+        <b-form-input v-model="password" class="myUserInput"></b-form-input>
       </b-form-group>
       <b-button-group class="myButtonGroup">
-      <b-button pill variant="success" @click="checkTheUser">Log In</b-button>
-      <b-button pill variant="outline-info" to="/sign-in">Sign In</b-button>
+      <b-button pill variant="outline-info" to="/">Log In</b-button>
+      <b-button pill variant="success" @click="signIn">Sign In</b-button>
     </b-button-group>
     </b-card>
     
@@ -38,45 +38,37 @@
 
 <script>
 import router from '@/router';
-import { validateUser, validateToken } from '../axios/axiosFunctions';
+import { addNewUser } from '../axios/axiosFunctions';
 import Swal from 'sweetalert2';
-import { mapActions } from "vuex";
 
 export default {
-  name: "LogIn",
+  name: "SignIn",
   data() {
     return {
       username: '',
       password: '',
     };
   },
-  async created() {
-    try{
-     const user = (await validateToken(localStorage.getItem("token"))).data.user;
-      this.changeCurrUserAction({username: user.username});
-      router.push('./store');
-    } catch(err) {
-      this.deleteCurrUserAction();
-    }
-  },
   methods: {
-    ...mapActions(['deleteCurrUserAction', 'changeCurrUserAction']),
-    async checkTheUser() {
-      try {
-      const user = (await validateUser(this.username, this.password)).data;
-      localStorage.setItem('token',`Bearer ${user.token}`);
-      this.changeCurrUserAction({username: this.username});
-      router.push('./store');
+    async signIn() {
+      try{
+      await addNewUser(this.username, this.password);
+       Swal.fire({
+          title: "Wellcome to the site!",
+          showConfirmButton: true,
+          confirmButtonText: "OK",
+          icon: "success",
+        });
+      router.push('/');
       } catch(err) {
-        Swal.fire({
-          title: "Make sure you put the correct data",
+         Swal.fire({
+          title: "Try Another Username, Or Check That you submited all the information",
           showConfirmButton: true,
           confirmButtonText: "OK",
           icon: "error",
         });
       }
-    }
-
+    },
   }
 
 };
@@ -90,14 +82,14 @@ export default {
   font-family: monospace;
   width: 80%; 
   max-width: 600px;
-  box-shadow: 12px 12px 2px 1px black;
+  box-shadow: 2px 1px 12px 12px black;
 }
 .registerContainer {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-image: url("../assets/folder.jpg");
+  background-image: url("../assets/signing.jpg");
 }
 .myFormForUser {
   margin: 15px;

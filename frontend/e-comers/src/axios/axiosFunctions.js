@@ -50,3 +50,9 @@ export const updateProductAmount = async (product_id, amount) => {
 
     return response;
 }
+
+export const addNewUser = async (username, password) => {
+    const response = await dbConnect.post(`/users/sign-up`,{username: username, password: password});
+
+    return response;
+}
