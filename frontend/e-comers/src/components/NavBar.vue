@@ -8,12 +8,12 @@
       <b-collapse id="nav-collapse" is-nav class="myNavBarCobtrolle">
         <b-navbar-nav>
           <b-nav-item class="myLink" to="/store">Store Page</b-nav-item>
-          <b-nav-item class="myLink" to="/about">Cashier</b-nav-item>
+          <b-nav-item class="myLink" to="/checkout">Cashier</b-nav-item>
           <b-badge variant="light">
             <span>
               <b-icon icon="cart3" font-scale="2" variant="light"></b-icon
             ></span>
-            {{ this.$store.state.cart.length }}
+            {{ getCartLength }}
           </b-badge>
         </b-navbar-nav>
 
@@ -26,16 +26,21 @@
                 variant="light"
               ></b-icon
             ></b-button>
-            <b-sidebar id="sidebar-right"  bg-variant="dark" text-variant="warning" backdrop right shadow>
-              <h3 v-if="!this.$store.state.currUser" class="myLink">
-                Wait! Who are you?
-              </h3>
+            <b-sidebar
+              id="sidebar-right"
+              bg-variant="dark"
+              text-variant="warning"
+              backdrop
+              right
+              shadow
+            >
+              <h3 v-if="!getCurrUser" class="myLink">Wait! Who are you?</h3>
               <h3 v-else class="myLink">
-                Wellcome Back {{ this.$store.state.currUser.username }}!
+                Wellcome Back {{ getCurrUsersUserName }}!
               </h3>
               <div class="px-3 py-2">
                 <p>What would you like to do today?</p>
-                <nav class="mb-3"  v-if="this.$store.state.currUser">
+                <nav class="mb-3" v-if="getCurrUser">
                   <b-nav vertical>
                     <b-nav-item to="/change-profile">Update profile</b-nav-item>
                     <b-nav-item to="/history">Order history</b-nav-item>
@@ -43,7 +48,7 @@
                     <b-nav-item @click="disconect">Disconnect</b-nav-item>
                   </b-nav>
                 </nav>
-                <nav class="mb-3"  v-else>
+                <nav class="mb-3" v-else>
                   <b-nav vertical>
                     <b-nav-item to="/sign-in">Sign in!</b-nav-item>
                     <b-nav-item to="/">Log in!</b-nav-item>
@@ -61,19 +66,22 @@
 <script>
 import { validateToken } from "../axios/axiosFunctions";
 import Swal from "sweetalert2";
-import router from '../router/index';
+import router from "../router/index";
+import { mapGetters } from "vuex";
+import { mapActions } from "vuex";
+
 export default {
   name: "NavBar",
   async created() {
     await this.createNavBar();
   },
   methods: {
+    ...mapActions(["deleteCurrUserAction", "changeCurrUserAction"]),
     async createNavBar() {
       try {
-        this.$store.state.currUser = {
-          username: (await validateToken(localStorage.getItem("token"))).data
-            .user.username,
-        };
+        const username = (await validateToken(localStorage.getItem("token")))
+          .data.user.username;
+        this.changeCurrUserAction({ username: username });
       } catch (err) {
         Swal.fire({
           title:
@@ -85,10 +93,13 @@ export default {
       }
     },
     disconect() {
-      this.$store.state.currUser = null;
+      this.deleteCurrUserAction();
       localStorage.removeItem("token");
       router.push("/");
-    }
+    },
+  },
+  computed: {
+    ...mapGetters(["getCartLength", "getCurrUser", "getCurrUsersUserName"]),
   },
 };
 </script>

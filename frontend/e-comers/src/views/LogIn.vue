@@ -40,9 +40,10 @@
 import router from '@/router';
 import { validateUser, validateToken } from '../axios/axiosFunctions';
 import Swal from 'sweetalert2';
+import { mapActions } from "vuex";
 
 export default {
-  name: "HomeView",
+  name: "LogIn",
   data() {
     return {
       username: '',
@@ -52,15 +53,14 @@ export default {
   async created() {
     try{
      const user = (await validateToken(localStorage.getItem("token"))).data.user;
-      this.$store.state.currUser = {
-      username: user.username
-      };
+      this.changeCurrUserAction({username: user.username});
       router.push('./store');
     } catch(err) {
-      this.$store.state.currUser = null;
+      this.deleteCurrUserAction();
     }
   },
   methods: {
+    ...mapActions(['deleteCurrUserAction', 'changeCurrUserAction']),
     goToSignIn() {
       router.push("./sigh-in");
     },
@@ -68,9 +68,7 @@ export default {
       try {
       const user = (await validateUser(this.username, this.password)).data;
       localStorage.setItem('token',`Bearer ${user.token}`);
-      this.$store.state.currUser = {
-      username: this.username
-      };
+      this.changeCurrUserAction({username: this.username});
       router.push('./store');
       } catch(err) {
         Swal.fire({

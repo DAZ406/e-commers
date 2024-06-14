@@ -40,6 +40,9 @@
 
 <script>
 import Swal from "sweetalert2";
+import { mapGetters } from "vuex";
+import { mapActions } from "vuex";
+
 export default {
   name: "BookCard",
   props: {
@@ -55,12 +58,10 @@ export default {
     this.findAmountOfProduct();
   },
   methods: {
+    ...mapActions(['addToCartAction']),
+
     findAmountOfProduct() {
-      this.$store.state.cart.map((item) => {
-        if (item.product.id === this.book.id) {
-          this.totallProductPurchasedAmount += parseInt(item.purchased_amount);
-        }
-      });
+      this.totallProductPurchasedAmount = this.getAmountOfProduct(this.book.id);
     },
     showModal() {
       this.$refs["my-modal"].show();
@@ -81,7 +82,7 @@ export default {
           icon: "error",
         });
       } else {
-        this.$store.state.cart.push({
+        this.addToCartAction({
           product: this.book,
           purchased_amount: this.numberOfBooks,
         });
@@ -96,6 +97,9 @@ export default {
       }
     },
   },
+  computed: {
+    ...mapGetters(['getAmountOfProduct'])
+  }
 };
 </script>
 
