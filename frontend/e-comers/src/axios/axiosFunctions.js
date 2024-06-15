@@ -69,3 +69,11 @@ export const getOrderedProductOfOrder = async (order_id) => {
     return response;
 }
 
+export const deleteUser = async (token) => {
+    const response = await dbConnect.delete(`/users/delete-user`,{headers: {
+        authorization: token
+      }});
+
+    return response;
+}
+

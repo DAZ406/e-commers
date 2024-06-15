@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import { validateToken } from "../axios/axiosFunctions";
+import { validateToken, deleteUser } from "../axios/axiosFunctions";
 import Swal from "sweetalert2";
 import router from "../router/index";
 import { mapGetters } from "vuex";
@@ -96,6 +96,26 @@ export default {
       this.deleteCurrUserAction();
       localStorage.removeItem("token");
       router.push("/");
+    },
+    async deleteUser() {
+      try {
+        await deleteUser(localStorage.getItem("token"));
+        Swal.fire({
+          title: "Goodbye, we will miss you",
+          showConfirmButton: true,
+          confirmButtonText: "OK",
+          icon: "success",
+        });
+        this.disconect();
+      } catch (err) {
+        Swal.fire({
+          title:
+            "There was a in recognising your user! We advise you to log again or create a new acount!",
+          showConfirmButton: true,
+          confirmButtonText: "OK",
+          icon: "error",
+        });
+      }
     },
   },
   computed: {
