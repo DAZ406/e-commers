@@ -56,3 +56,16 @@ export const addNewUser = async (username, password) => {
 
     return response;
 }
+
+export const getOrdersOfUser = async (user_id) => {
+    const response = await dbConnect.get(`/orders/${user_id}`);
+
+    return response;
+}
+
+export const getOrderedProductOfOrder = async (order_id) => {
+    const response = await dbConnect.get(`/ordered-products/order/${order_id}`);
+
+    return response;
+}
+

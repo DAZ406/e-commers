@@ -13,7 +13,7 @@ export const getProdsInOrderHandler = async (
       const prods: any[] = [];
 
        orderedProds.forEach((ordprod)  => {
-       prods.push({product: ordprod.product, purchased_amount: ordprod.purchased_amount});
+       prods.push({product: ordprod.product, purchased_amount: ordprod.purchased_amount, id: ordprod.id});
       });
   
       

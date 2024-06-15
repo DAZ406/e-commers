@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import LogIn from '../views/LogIn.vue'
 import StorePage from '../views/StorePage.vue'
 import SignIn from '../views/SignIn.vue'
+import HistoryOrder from '../views/HistoryOrder.vue';
 
 Vue.use(VueRouter)
 
@@ -29,6 +30,11 @@ const routes = [
     path: '/sign-in',
     name: 'signin',
     component: SignIn
+  },
+  {
+    path: '/history',
+    name: `history`,
+    component: HistoryOrder
   }
 ]
 
