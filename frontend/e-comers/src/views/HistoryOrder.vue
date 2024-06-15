@@ -31,7 +31,6 @@ export default {
             ).data.user.id
           )
         ).data;
-        console.log(this.orders);
       } catch (err) {
         Swal.fire({
           title:
