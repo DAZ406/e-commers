@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <nav-bar v-if="$route.path !== '/' && $route.path !== '/sign-in'"></nav-bar>
+    <nav-bar v-if="$route.path !== '/' && $route.path !== '/sign-in' &&  $route.path !== '/change-profile'"></nav-bar>
      <transition
       @before-enter="beforeEnter"
       @enter="enter"

@@ -45,15 +45,19 @@ export const updateUser = async (user: User, newUsername: string, newPassword: s
         throw new CustomError("there no such user", 404);
     }
 
-    userToUpdate.username = newUsername;
-    userToUpdate.password = newPassword;
+    if(newUsername) {
+        userToUpdate.username = newUsername;
+    }
+    if(newPassword) {
+        userToUpdate.password = newPassword;
+    }
 
     await userRepository.save(userToUpdate);
 
     const token = jwt.sign(
         { id: userToUpdate.id, username: userToUpdate.username, password: userToUpdate.password },
         key,
-        { expiresIn: '1h' }
+        { expiresIn: '24h' }
     );
     return token;
 };

@@ -57,10 +57,11 @@ export default {
       router.push('./store');
     } catch(err) {
       this.deleteCurrUserAction();
+      this.deleteAllFromCartAction();
     }
   },
   methods: {
-    ...mapActions(['deleteCurrUserAction', 'changeCurrUserAction']),
+    ...mapActions(['deleteCurrUserAction', 'changeCurrUserAction', 'deleteAllFromCartAction']),
     async checkTheUser() {
       try {
       const user = (await validateUser(this.username, this.password)).data;

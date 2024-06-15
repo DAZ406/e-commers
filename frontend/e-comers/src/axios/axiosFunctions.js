@@ -77,3 +77,13 @@ export const deleteUser = async (token) => {
     return response;
 }
 
+export const updateUser = async (token, newUsername, newPassword) => {
+    const response = await dbConnect.patch(`/users/update`,{newUsername: newUsername, newPassword: newPassword} ,{headers: {
+        authorization: token
+      }});
+
+    return response;
+}
+
+
+

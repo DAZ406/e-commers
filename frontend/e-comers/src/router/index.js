@@ -4,6 +4,7 @@ import LogIn from '../views/LogIn.vue'
 import StorePage from '../views/StorePage.vue'
 import SignIn from '../views/SignIn.vue'
 import HistoryOrder from '../views/HistoryOrder.vue';
+import UpdateForm from '../views/UpdateForm.vue';
 
 Vue.use(VueRouter)
 
@@ -35,6 +36,11 @@ const routes = [
     path: '/history',
     name: `history`,
     component: HistoryOrder
+  },
+  {
+    path: '/change-profile',
+    name: `update`,
+    component: UpdateForm
   }
 ]
 
